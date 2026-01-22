@@ -41,6 +41,7 @@ def split_nodes_image(old_nodes):
         images = extract_markdown_images(old_node.text)
         if len(images) == 0:
             new_nodes.append(old_node)
+            continue
 
         for image in images:
             image_text = f"![{image[0]}]({image[1]})"
@@ -66,6 +67,7 @@ def split_nodes_link(old_nodes):
         links = extract_markdown_links(old_node.text)
         if len(links) == 0:
             new_nodes.append(old_node)
+            continue
 
         for link in links:
             link_text = f"[{link[0]}]({link[1]})"
@@ -80,3 +82,13 @@ def split_nodes_link(old_nodes):
             new_nodes.append(old_node)
 
     return new_nodes
+
+
+def text_to_textnodes(text):
+    nodes = [TextNode(text, TextType.Plain)]
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    nodes = split_nodes_delimiter(nodes, "**", TextType.Bold)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.Italic)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.Code)
+    return nodes
