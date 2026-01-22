@@ -101,6 +101,68 @@ class TestInlineMarkdown(unittest.TestCase):
             matches,
         )
 
+    def test_split_image(self):
+        node = TextNode(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)",
+            TextType.Plain,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.Plain),
+                TextNode("image", TextType.Image, "https://i.imgur.com/zjjcJKZ.png"),
+            ],
+            new_nodes,
+        )
+
+    def test_split_image_single(self):
+        node = TextNode(
+            "![image](https://www.example.COM/Image.PNG)",
+            TextType.Plain,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("image", TextType.Image, "https://www.example.COM/Image.PNG"),
+            ],
+            new_nodes,
+        )
+
+    def test_split_images(self):
+        node = TextNode(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+            TextType.Plain,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.Plain),
+                TextNode("image", TextType.Image, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(" and another ", TextType.Plain),
+                TextNode(
+                    "second image", TextType.Image, "https://i.imgur.com/3elNhQu.png"
+                ),
+            ],
+            new_nodes,
+        )
+
+    def test_split_links(self):
+        node = TextNode(
+            "This is text with a [link](https://boot.dev) and [another link](https://blog.boot.dev) with text that follows",
+            TextType.Plain,
+        )
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with a ", TextType.Plain),
+                TextNode("link", TextType.Link, "https://boot.dev"),
+                TextNode(" and ", TextType.Plain),
+                TextNode("another link", TextType.Link, "https://blog.boot.dev"),
+                TextNode(" with text that follows", TextType.Plain),
+            ],
+            new_nodes,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

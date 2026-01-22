@@ -4,9 +4,12 @@ from text import *
 
 
 def main():
-    node = TextNode("text is **bold** **text**", TextType.Plain)
-    new_nodes = split_nodes_delimiter([node], "**", TextType.Bold)
-    print(new_nodes)
+    node = TextNode(
+        "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+        TextType.Plain,
+    )
+    nodes = split_nodes_image([node])
+    print(nodes)
 
 
 main()
