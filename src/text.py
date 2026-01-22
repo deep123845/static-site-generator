@@ -92,13 +92,3 @@ def text_to_textnodes(text):
     nodes = split_nodes_delimiter(nodes, "_", TextType.Italic)
     nodes = split_nodes_delimiter(nodes, "`", TextType.Code)
     return nodes
-
-
-def markdown_to_blocks(text):
-    blocks = text.split("\n\n")
-    stripped_blocks = []
-    for block in blocks:
-        if block == "":
-            continue
-        stripped_blocks.append(block.strip())
-    return stripped_blocks
