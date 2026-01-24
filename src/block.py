@@ -38,7 +38,7 @@ def block_to_block_type(block):
     num_lines = len(lines)
 
     for i in range(num_lines):
-        if lines[i][0:2] != "> ":
+        if lines[i][0:2] != "> " and lines[i] != ">":
             break
         if i == num_lines - 1:
             return BlockType.QUOTE
