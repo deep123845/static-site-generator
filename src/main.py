@@ -3,6 +3,7 @@ from htmlnode import *
 from text import *
 import shutil
 import os
+from pagegen import *
 
 
 def recursive_copy_static():
@@ -28,6 +29,8 @@ def recursive_copy(path):
 
 def main():
     recursive_copy_static()
+
+    generate_page("content/index.md", "template.html", "public/index.html")
 
 
 main()
