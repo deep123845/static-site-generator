@@ -29,18 +29,19 @@ class TextNode:
 
 
 def text_node_to_html_node(text_node):
+    stripped = text_node.text.replace("\n", " ")
     match (text_node.text_type):
         case TextType.Plain:
-            return LeafNode(None, text_node.text)
+            return LeafNode(None, stripped)
         case TextType.Bold:
-            return LeafNode("b", text_node.text)
+            return LeafNode("b", stripped)
         case TextType.Italic:
-            return LeafNode("i", text_node.text)
+            return LeafNode("i", stripped)
         case TextType.Code:
             return LeafNode("code", text_node.text)
         case TextType.Link:
-            return LeafNode("a", text_node.text, {"href": text_node.url})
+            return LeafNode("a", stripped, {"href": text_node.url})
         case TextType.Image:
-            return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
+            return LeafNode("img", "", {"src": text_node.url, "alt": stripped})
         case _:
             raise Exception("Error, Invalid Text Type")
