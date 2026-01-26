@@ -20,7 +20,7 @@ def recursive_copy(path):
 
     for item in items:
         item_path = os.path.join(path, item)
-        new_path = item_path.replace("static", "public", 1)
+        new_path = item_path.replace("static", "docs", 1)
         if os.path.isfile(item_path):
             shutil.copy(item_path, new_path)
         else:
@@ -28,31 +28,33 @@ def recursive_copy(path):
             recursive_copy(item_path)
 
 
-def generate_pages(content_path, template_path):
+def generate_pages(content_path, template_path, basepath):
     items = os.listdir(content_path)
 
     for item in items:
         item_path = os.path.join(content_path, item)
-        new_path = item_path.replace("content", "public", 1)
+        new_path = item_path.replace("content", "docs", 1)
         new_path = new_path.rsplit(".md", 1)
         new_path = ".html".join(new_path)
         if os.path.isfile(item_path):
             if item[-3:] != ".md":
                 continue
-            generate_page(item_path, template_path, new_path)
+            generate_page(item_path, template_path, new_path, basepath)
         else:
             os.mkdir(new_path)
-            generate_pages(item_path, template_path)
+            generate_pages(item_path, template_path, basepath)
 
 
 def main():
-    basepath = sys.argv[1]
+    basepath = "./"
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
     static_path = os.path.join(basepath, "static")
     content_path = os.path.join(basepath, "content")
-    public_path = os.path.join(basepath, "public")
+    doc_path = os.path.join(basepath, "docs")
     template_path = os.path.join(basepath, "template.html")
-    recursive_copy_static(static_path, public_path)
-    generate_pages(content_path, template_path)
+    recursive_copy_static(static_path, doc_path)
+    generate_pages(content_path, template_path, basepath)
 
 
 main()
