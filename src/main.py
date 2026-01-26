@@ -49,12 +49,8 @@ def main():
     basepath = "./"
     if len(sys.argv) > 1:
         basepath = sys.argv[1]
-    static_path = os.path.join(basepath, "static")
-    content_path = os.path.join(basepath, "content")
-    doc_path = os.path.join(basepath, "docs")
-    template_path = os.path.join(basepath, "template.html")
-    recursive_copy_static(static_path, doc_path)
-    generate_pages(content_path, template_path, basepath)
+    recursive_copy_static("./static", "./docs")
+    generate_pages("./content", "./template.html", basepath)
 
 
 main()
