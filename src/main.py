@@ -27,10 +27,27 @@ def recursive_copy(path):
             recursive_copy(item_path)
 
 
+def generate_pages(path):
+    template = "template.html"
+    items = os.listdir(path)
+
+    for item in items:
+        item_path = os.path.join(path, item)
+        new_path = item_path.replace("content", "public", 1)
+        new_path = new_path.rsplit(".md", 1)
+        new_path = ".html".join(new_path)
+        if os.path.isfile(item_path):
+            if item[-3:] != ".md":
+                continue
+            generate_page(item_path, template, new_path)
+        else:
+            os.mkdir(new_path)
+            generate_pages(item_path)
+
+
 def main():
     recursive_copy_static()
-
-    generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages("content")
 
 
 main()
